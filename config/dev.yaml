@@ -1,0 +1,19 @@
+# VPC CIDR
+vpcCidr: '10.0.0.0/20'
+  
+# Domain Name
+domainName: 'example.local'
+  
+# Instance type for Bastion Host
+bastionHostInstanceType: "t3.small"
+  
+# Bastion Host whitelisted IPs
+bastionHostWhitelist: 
+  - '0.0.0.0/0' # Warning: this mean that access is open to the internet 
+  
+# Instance type for Control Node
+controlNodeInstanceType: "t3.micro"
+
+# Control Node whitelisted IPs
+controlNodeWhitelist: 
+  - '0.0.0.0/0' # Warning: this mean that access is open to the internet 

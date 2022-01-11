@@ -29,6 +29,7 @@ jspm_packages/
 *.tgz
 .yarn-integrity
 .cache
+*.pem
 !/.projenrc.js
 /test-reports/
 junit.xml
@@ -47,5 +48,4 @@ junit.xml
 /cdk.out/
 .cdk.staging/
 .parcel-cache/
-*.pem
 !/.github/workflows/upgrade.yml

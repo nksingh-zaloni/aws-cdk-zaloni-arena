@@ -1,5 +1,6 @@
 {
   "name": "aws-cdk-zaloni-arena",
+  "description": "This project is meant to automate the deployment of all the resources required to deploy Zaloni Arena on AWS using AWS CDK in Typescript.",
   "scripts": {
     "build": "npx projen build",
     "clobber": "npx projen clobber",
@@ -50,7 +51,7 @@
     "@aws-cdk/pipelines": "^1.134.0"
   },
   "bundledDependencies": [],
-  "license": "Apache-2.0",
+  "license": "MIT-0",
   "version": "0.0.0",
   "jest": {
     "testMatch": [

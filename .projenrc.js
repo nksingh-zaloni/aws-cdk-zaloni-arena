@@ -1,9 +1,12 @@
 const { AwsCdkTypeScriptApp } = require('projen');
 const project = new AwsCdkTypeScriptApp({
-  cdkVersion: '1.134.0',
-  defaultReleaseBranch: 'main',
   name: 'aws-cdk-zaloni-arena',
-
+  description: 'This project is meant to automate the deployment of all the resources required to deploy Zaloni Arena on AWS using AWS CDK in Typescript.',
+  license: 'MIT-0',
+  copyrightOwner: 'Amazon.com, Inc. or its affiliates. All Rights Reserved.',
+  copyrightPeriod: '',
+  defaultReleaseBranch: 'main',
+  cdkVersion: '1.134.0',
   cdkDependencies: [
     "@aws-cdk/aws-ec2",
     "@aws-cdk/aws-iam",
@@ -12,18 +15,14 @@ const project = new AwsCdkTypeScriptApp({
     "@aws-cdk/aws-codecommit",
     "@aws-cdk/aws-directoryservice",
   ],
-  // deps: [],                    /* Runtime dependencies of this module. */
-  // description: undefined,      /* The description is just a string that helps people understand the purpose of the package. */
   devDeps: [
     "cdk-ec2-key-pair",
     "yamljs",
     "@types/yamljs"
   ],
-  // packageName: undefined,      /* The "name" in package.json. */
-  // release: undefined,          /* Add release management to this project. */
   context:{
     ["@aws-cdk/core:newStyleStackSynthesis"]: true
-  }
+  },
+  gitignore: ['*.pem']
 });
-project.gitignore.exclude('*.pem');
 project.synth();

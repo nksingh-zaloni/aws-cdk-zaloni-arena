@@ -9,11 +9,6 @@ import { MainStage } from './main-stage';
 
 const app = new cdk.App();
 
-// new MainStack(app, 'arena-dev', { 
-//   env: devEnv,
-//   ...config_dev
-// });
-
 new PipelineStack(app, 'arena-pipeline', { 
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -23,7 +18,7 @@ new PipelineStack(app, 'arena-pipeline', {
 
 try {
   const config = YAML.load(resolve(__dirname, '../config/dev.yaml'))
-  new MainStage(app, 'Dev', {
+  new MainStage(app, 'dev', {
     env: { 
       account: process.env.CDK_DEFAULT_ACCOUNT, 
       region: process.env.CDK_DEFAULT_REGION 

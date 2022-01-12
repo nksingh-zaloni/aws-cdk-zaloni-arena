@@ -19,7 +19,7 @@ export class PipelineStack extends cdk.Stack {
     const pipeline = new CodePipeline(this, 'Pipeline', {
         pipelineName: 'aws-cdk-zaloni-arena',
         synth: new CodeBuildStep('SynthStep', {
-            input: CodePipelineSource.codeCommit(repo, 'main'),
+            input: CodePipelineSource.codeCommit(repo, 'pipeline'),
             commands: [
                 'npm i',
                 'npx projen synth',

@@ -17,3 +17,8 @@ controlNodeInstanceType: "t3.micro"
 # Control Node whitelisted IPs
 controlNodeWhitelist: 
   - '0.0.0.0/0' # Warning: this mean that access is open to the internet 
+
+# Where to install
+#env:
+#  region: '<region>'
+#  account: '<account_no>'

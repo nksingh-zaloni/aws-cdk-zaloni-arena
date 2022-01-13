@@ -12,7 +12,7 @@ export class MainStage extends Stage {
     constructor(scope: Construct, id: string, props: MainStageProps) {
         super(scope, id, props);
 
-        new MainStack(this, 'arena', {
+        new MainStack(this, 'aws-cdk-zaloni-arena', {
             ...props.config            
         });
     }

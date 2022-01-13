@@ -10,10 +10,6 @@
       "type": "build"
     },
     {
-      "name": "@types/yamljs",
-      "type": "build"
-    },
-    {
       "name": "@typescript-eslint/eslint-plugin",
       "type": "build"
     },
@@ -24,10 +20,6 @@
     {
       "name": "aws-cdk",
       "version": "^1.134.0",
-      "type": "build"
-    },
-    {
-      "name": "cdk-ec2-key-pair",
       "type": "build"
     },
     {
@@ -82,10 +74,6 @@
       "type": "build"
     },
     {
-      "name": "yamljs",
-      "type": "build"
-    },
-    {
       "name": "@aws-cdk/assert",
       "version": "^1.134.0",
       "type": "runtime"
@@ -111,6 +99,11 @@
       "type": "runtime"
     },
     {
+      "name": "@aws-cdk/aws-secretsmanager",
+      "version": "^1.134.0",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-cdk/aws-ssm",
       "version": "^1.134.0",
       "type": "runtime"
@@ -123,6 +116,19 @@
     {
       "name": "@aws-cdk/pipelines",
       "version": "^1.134.0",
+      "type": "runtime"
+    },
+    {
+      "name": "@types/yamljs",
+      "type": "runtime"
+    },
+    {
+      "name": "cdk-ec2-key-pair",
+      "version": "2.2.0",
+      "type": "runtime"
+    },
+    {
+      "name": "yamljs",
       "type": "runtime"
     }
   ],

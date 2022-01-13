@@ -19,7 +19,7 @@ npx cdk bootstrap --cloudformation-execution-policies \
 To install the stack with [this configuration](./config/dev.yaml)
 
 ```console
-npx cdk deploy dev/*
+npx cdk deploy dev/aws-cdk-zaloni-arena
 ```
 
 ## CI/CD Pipeline

@@ -8,21 +8,25 @@ const project = new AwsCdkTypeScriptApp({
   defaultReleaseBranch: 'main',
   cdkVersion: '1.134.0',
   cdkDependencies: [
-    "@aws-cdk/aws-ec2",
-    "@aws-cdk/aws-iam",
-    "@aws-cdk/aws-ssm",
-    "@aws-cdk/pipelines",
-    "@aws-cdk/aws-codecommit",
-    "@aws-cdk/aws-directoryservice",
+    '@aws-cdk/aws-ec2',
+    '@aws-cdk/aws-iam',
+    '@aws-cdk/aws-ssm',
+    '@aws-cdk/pipelines',
+    '@aws-cdk/aws-codecommit',
+    '@aws-cdk/aws-directoryservice',
+    '@aws-cdk/aws-secretsmanager',
   ],
-  devDeps: [
-    "cdk-ec2-key-pair",
-    "yamljs",
-    "@types/yamljs"
+  deps: [
+    'cdk-ec2-key-pair@2.2.0',
+    'yamljs',
+    '@types/yamljs',
   ],
-  context:{
-    ["@aws-cdk/core:newStyleStackSynthesis"]: true
+  context: {
+    ['@aws-cdk/core:newStyleStackSynthesis']: true,
   },
-  gitignore: ['*.pem']
+  gitignore: [
+    '*.pem',
+    'test/__snapshots__/',
+  ],
 });
 project.synth();

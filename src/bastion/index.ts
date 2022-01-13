@@ -1,18 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
+import * as cdk from '@aws-cdk/core';
 import { KeyPair } from 'cdk-ec2-key-pair';
 
 interface BastionProps {
   vpc: ec2.Vpc;
   key: KeyPair;
-  instanceType: string,
-  whitelist: Array<string>,
-  dsSecret: secretsmanager.Secret
+  instanceType: string;
+  whitelist: Array<string>;
+  dsSecret: secretsmanager.Secret;
 }
 
 export class Bastion extends cdk.Construct {
@@ -24,7 +24,7 @@ export class Bastion extends cdk.Construct {
     this.securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
       vpc: props.vpc,
       description: 'Zaloni Arena Bastion Host',
-      allowAllOutbound: true
+      allowAllOutbound: true,
     });
     // Access to the white listed IPs
     for (const ip of props.whitelist) {
@@ -37,10 +37,10 @@ export class Bastion extends cdk.Construct {
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
         iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMDirectoryServiceAccess'),
-        iam.ManagedPolicy.fromAwsManagedPolicyName('SecretsManagerReadWrite')
-      ]
-    })
-    
+        iam.ManagedPolicy.fromAwsManagedPolicyName('SecretsManagerReadWrite'),
+      ],
+    });
+
     // Use Latest Windows 2016
     const machineImage = new ec2.WindowsImage(ec2.WindowsVersion.WINDOWS_SERVER_2016_ENGLISH_FULL_BASE);
 
@@ -56,7 +56,7 @@ export class Bastion extends cdk.Construct {
     userData.addCommands('$username   = $Secret.username + "@" + $Secret.domain');
     userData.addCommands('$credential = New-Object System.Management.Automation.PSCredential($username,$password)');
     userData.addCommands('Add-Computer -DomainName $Secret.domain -Credential $credential -Restart -Force');
-    
+
     // Create the App Node
     const instance = new ec2.Instance(this, 'BastionHost', {
       vpc: props.vpc,
@@ -67,15 +67,15 @@ export class Bastion extends cdk.Construct {
       userData,
       role,
       vpcSubnets: {
-        subnetGroupName: 'public-subnet'
-      }
+        subnetGroupName: 'public-subnet',
+      },
     });
     // Join domain
-    cdk.Tags.of(instance).add("JoinAD", "");
+    cdk.Tags.of(instance).add('JoinAD', '');
 
     new cdk.CfnOutput(this, 'Bastion Host IP Address', { value: instance.instancePublicIp });
-    new cdk.CfnOutput(this, 'Bastion Host Administrator Password', { 
-      value: 'aws ec2 get-password-data --instance-id ' + instance.instanceId +' --priv-launch-key ' + props.key.keyPairName + '.pem'
+    new cdk.CfnOutput(this, 'Bastion Host Administrator Password', {
+      value: 'aws ec2 get-password-data --instance-id ' + instance.instanceId +' --priv-launch-key ' + props.key.keyPairName + '.pem',
     });
   }
 }

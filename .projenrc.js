@@ -12,9 +12,6 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     'yamljs',
     '@types/yamljs',
   ],
-  context: {
-    ['@aws-cdk/core:newStyleStackSynthesis']: true,
-  },
   gitignore: [
     '*.pem',
   ],

@@ -49,6 +49,7 @@
     "@types/yamljs": "^0.2.31",
     "aws-cdk-lib": "^2.8.0",
     "cdk-ec2-key-pair": "3.0.0",
+    "cdk-iam-floyd": "^0.305.0",
     "constructs": "^10.0.5",
     "yamljs": "^0.3.0"
   },

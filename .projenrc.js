@@ -11,6 +11,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     'cdk-ec2-key-pair',
     'yamljs',
     '@types/yamljs',
+    'cdk-iam-floyd',
   ],
   gitignore: [
     '*.pem',

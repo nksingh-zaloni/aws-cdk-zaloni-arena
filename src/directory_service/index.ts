@@ -3,7 +3,6 @@
 import * as directoryservice from '@aws-cdk/aws-directoryservice';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as ssm from '@aws-cdk/aws-ssm';
 import * as cdk from '@aws-cdk/core';
 
 interface DirectoryServiceProps {
@@ -61,22 +60,6 @@ export class DirectoryService extends cdk.Construct {
     new ec2.CfnVPCDHCPOptionsAssociation(this, 'DhcpOptionsAssociation', {
       dhcpOptionsId: dhcp_options.ref,
       vpcId: props.vpc.vpcId,
-    });
-
-    // SSM Association for joining the domain
-    new ssm.CfnAssociation(this, 'JoinADAssociation', {
-      name: 'AWS-JoinDirectoryServiceDomain',
-      parameters: {
-        directoryId: [ds.ref],
-        directoryName: [ds.name],
-      },
-      scheduleExpression: 'rate(30 minutes)',
-      targets: [
-        {
-          key: 'tag-key',
-          values: ['JoinAD'],
-        },
-      ],
     });
   }
 }

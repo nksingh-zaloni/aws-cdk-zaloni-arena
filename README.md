@@ -1,7 +1,7 @@
-# AWS CDK Infrastructure as Code for Zaloni Arena
+# AWS CDK Infrastructure as Code for Zaloni Arena POC/MVP Prerequisites
 
-This project is meant to automate the deployment of all the resources required 
-to deploy Zaloni Arena on AWS using AWS CDK in Typescript.
+This project is meant to automate the deployment of all the prerequsite resources required 
+to deploy Zaloni Arena on AWS using AWS CDK in Typescript. The code deploys the resoruces into a new isolated VPC. 
 
 ![Architecture](./doc/aws-cdk-zaloni-arena-architecture.jpg)
 

@@ -1,14 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import { Stage, Construct, StageProps } from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import { MainStack } from './main-stack';
 
-interface MainStageProps extends StageProps {
+interface MainStageProps extends cdk.StageProps {
   config: any;
 }
 
-export class MainStage extends Stage {
+export class MainStage extends cdk.Stage {
   constructor(scope: Construct, id: string, props: MainStageProps) {
     super(scope, id, props);
 

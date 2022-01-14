@@ -2,14 +2,15 @@
 // SPDX-License-Identifier: MIT-0
 
 import { resolve } from 'path';
-import * as codecommit from '@aws-cdk/aws-codecommit';
-import * as cdk from '@aws-cdk/core';
-import { CodePipelineSource, CodePipeline, CodeBuildStep, ManualApprovalStep } from '@aws-cdk/pipelines';
-import * as YAML from 'yamljs';
+import * as cdk from 'aws-cdk-lib';
+import * as codecommit from 'aws-cdk-lib/aws-codecommit';
+import { CodePipelineSource, CodePipeline, CodeBuildStep, ManualApprovalStep } from 'aws-cdk-lib/pipelines';
+import { Construct } from 'constructs';
+import YAML from 'yamljs';
 import { MainStage } from './main-stage';
 
 export class PipelineStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const repo = codecommit.Repository.fromRepositoryName(this, 'Repository',

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 import { KeyPair } from 'cdk-ec2-key-pair';
+import { Construct } from 'constructs';
 import { Bastion } from './bastion';
 import { Control } from './control';
 import { DirectoryService } from './directory_service';
@@ -31,7 +32,7 @@ interface MainStackProps extends cdk.StackProps {
 }
 
 export class MainStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: MainStackProps) {
+  constructor(scope: Construct, id: string, props: MainStackProps) {
     super(scope, id, props);
 
     // Create a Key Pair to be used by Bastion and Control hosts

@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: MIT-0
 
 import { resolve } from 'path';
-import * as cdk from '@aws-cdk/core';
-import * as YAML from 'yamljs';
+import * as cdk from 'aws-cdk-lib';
+import YAML from 'yamljs';
 import { MainStage } from './main-stage';
 import { PipelineStack } from './pipeline-stack';
 
 const app = new cdk.App();
 
-new PipelineStack(app, 'arena-pipeline', {
+new PipelineStack(app, 'aws-cdk-zaloni-arena-pipeline', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,

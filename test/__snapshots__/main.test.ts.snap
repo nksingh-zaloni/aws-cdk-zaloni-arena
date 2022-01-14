@@ -1,0 +1,1385 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot 1`] = `
+Object {
+  "Outputs": Object {
+    "BastionBastionHostAdministratorPassword01A09A4B": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "aws ec2 get-password-data --instance-id ",
+            Object {
+              "Ref": "BastionBastionHost46653B97",
+            },
+            " --priv-launch-key ",
+            Object {
+              "Fn::GetAtt": Array [
+                "KeyPairEC2KeyPairtest58BBD56D",
+                "KeyPairName",
+              ],
+            },
+            ".pem",
+          ],
+        ],
+      },
+    },
+    "BastionBastionHostIPAddressEB25D4FD": Object {
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "BastionBastionHost46653B97",
+          "PublicIp",
+        ],
+      },
+    },
+    "ControlControlNodeIPAddress26E0E4EB": Object {
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "ControlControlNode0C78693C",
+          "PublicIp",
+        ],
+      },
+    },
+    "ControlControlNodesshcommand2DF686F9": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "ssh -i ",
+            Object {
+              "Fn::GetAtt": Array [
+                "KeyPairEC2KeyPairtest58BBD56D",
+                "KeyPairName",
+              ],
+            },
+            ".pem -o IdentitiesOnly=yes ec2-user@",
+            Object {
+              "Fn::GetAtt": Array [
+                "ControlControlNode0C78693C",
+                "PublicIp",
+              ],
+            },
+          ],
+        ],
+      },
+    },
+    "DirectoryServiceADCredentials8E1992DD": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "aws secretsmanager get-secret-value --secret-id ",
+            Object {
+              "Fn::Join": Array [
+                "-",
+                Array [
+                  Object {
+                    "Fn::Select": Array [
+                      0,
+                      Object {
+                        "Fn::Split": Array [
+                          "-",
+                          Object {
+                            "Fn::Select": Array [
+                              6,
+                              Object {
+                                "Fn::Split": Array [
+                                  ":",
+                                  Object {
+                                    "Ref": "DirectoryServiceSecret688F71AC",
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  Object {
+                    "Fn::Select": Array [
+                      1,
+                      Object {
+                        "Fn::Split": Array [
+                          "-",
+                          Object {
+                            "Fn::Select": Array [
+                              6,
+                              Object {
+                                "Fn::Split": Array [
+                                  ":",
+                                  Object {
+                                    "Ref": "DirectoryServiceSecret688F71AC",
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              ],
+            },
+          ],
+        ],
+      },
+    },
+    "KeyDownloadCommand": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "aws secretsmanager get-secret-value --secret-id ec2-ssh-key/test/private --query SecretString --output text > ",
+            Object {
+              "Fn::GetAtt": Array [
+                "KeyPairEC2KeyPairtest58BBD56D",
+                "KeyPairName",
+              ],
+            },
+            ".pem && chmod 400 ",
+            Object {
+              "Fn::GetAtt": Array [
+                "KeyPairEC2KeyPairtest58BBD56D",
+                "KeyPairName",
+              ],
+            },
+            ".pem",
+          ],
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "BootstrapVersion": Object {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": Object {
+      "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+    },
+    "SsmParameterValueawsserviceamiwindowslatestWindowsServer2016EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter": Object {
+      "Default": "/aws/service/ami-windows-latest/Windows_Server-2016-English-Full-Base",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+    },
+  },
+  "Resources": Object {
+    "BastionBastionHost46653B97": Object {
+      "DependsOn": Array [
+        "Bastionec2RoleD3C1D105",
+        "DirectoryServiceDhcpOptionsC5E3CEA1",
+        "DirectoryServiceDHCPOptionsE150C11E",
+        "DirectoryServiceDhcpOptionsAssociationAF4CD32A",
+        "DirectoryServiceSecret688F71AC",
+      ],
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "IamInstanceProfile": Object {
+          "Ref": "BastionBastionHostInstanceProfile16269906",
+        },
+        "ImageId": Object {
+          "Ref": "SsmParameterValueawsserviceamiwindowslatestWindowsServer2016EnglishFullBaseC96584B6F00A464EAD1953AFF4B05118Parameter",
+        },
+        "InstanceType": "t3.small",
+        "KeyName": Object {
+          "Fn::GetAtt": Array [
+            "KeyPairEC2KeyPairtest58BBD56D",
+            "KeyPairName",
+          ],
+        },
+        "SecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "BastionSecurityGroup6D392D75",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1SubnetF024651E",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "JoinAD",
+            "Value": "",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Bastion/BastionHost",
+          },
+        ],
+        "UserData": Object {
+          "Fn::Base64": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "<powershell>Install-WindowsFeature DNS
+Install-WindowsFeature -name AD-Domain-Services -IncludeManagementTools
+Import-Module AWSPowerShell
+[string]$SecretAD  = \\"",
+                Object {
+                  "Fn::Join": Array [
+                    "-",
+                    Array [
+                      Object {
+                        "Fn::Select": Array [
+                          0,
+                          Object {
+                            "Fn::Split": Array [
+                              "-",
+                              Object {
+                                "Fn::Select": Array [
+                                  6,
+                                  Object {
+                                    "Fn::Split": Array [
+                                      ":",
+                                      Object {
+                                        "Ref": "DirectoryServiceSecret688F71AC",
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      Object {
+                        "Fn::Select": Array [
+                          1,
+                          Object {
+                            "Fn::Split": Array [
+                              "-",
+                              Object {
+                                "Fn::Select": Array [
+                                  6,
+                                  Object {
+                                    "Fn::Split": Array [
+                                      ":",
+                                      Object {
+                                        "Ref": "DirectoryServiceSecret688F71AC",
+                                      },
+                                    ],
+                                  },
+                                ],
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  ],
+                },
+                "\\"
+$SecretObj = Get-SECSecretValue -SecretId $SecretAD
+[PSCustomObject]$Secret = ($SecretObj.SecretString  | ConvertFrom-Json)
+$password   = $Secret.password | ConvertTo-SecureString -asPlainText -Force
+$username   = $Secret.username + \\"@\\" + $Secret.domain
+$credential = New-Object System.Management.Automation.PSCredential($username,$password)
+Add-Computer -DomainName $Secret.domain -Credential $credential -Restart -Force</powershell>",
+              ],
+            ],
+          },
+        },
+      },
+      "Type": "AWS::EC2::Instance",
+    },
+    "BastionBastionHostInstanceProfile16269906": Object {
+      "DependsOn": Array [
+        "DirectoryServiceDhcpOptionsC5E3CEA1",
+        "DirectoryServiceDHCPOptionsE150C11E",
+        "DirectoryServiceDhcpOptionsAssociationAF4CD32A",
+        "DirectoryServiceSecret688F71AC",
+      ],
+      "Properties": Object {
+        "Roles": Array [
+          Object {
+            "Ref": "Bastionec2RoleD3C1D105",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "BastionSecurityGroup6D392D75": Object {
+      "DependsOn": Array [
+        "DirectoryServiceDhcpOptionsC5E3CEA1",
+        "DirectoryServiceDHCPOptionsE150C11E",
+        "DirectoryServiceDhcpOptionsAssociationAF4CD32A",
+        "DirectoryServiceSecret688F71AC",
+      ],
+      "Properties": Object {
+        "GroupDescription": "Zaloni Arena Bastion Host",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow RDP Access",
+            "FromPort": 3389,
+            "IpProtocol": "tcp",
+            "ToPort": 3389,
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "Bastionec2RoleD3C1D105": Object {
+      "DependsOn": Array [
+        "DirectoryServiceDhcpOptionsC5E3CEA1",
+        "DirectoryServiceDHCPOptionsE150C11E",
+        "DirectoryServiceDhcpOptionsAssociationAF4CD32A",
+        "DirectoryServiceSecret688F71AC",
+      ],
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "ec2.",
+                      Object {
+                        "Ref": "AWS::URLSuffix",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonSSMDirectoryServiceAccess",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/SecretsManagerReadWrite",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ControlControlNode0C78693C": Object {
+      "DependsOn": Array [
+        "Controlec2RoleB2AF2E44",
+      ],
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "IamInstanceProfile": Object {
+          "Ref": "ControlControlNodeInstanceProfileB79D5D54",
+        },
+        "ImageId": Object {
+          "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter",
+        },
+        "InstanceType": "t3.micro",
+        "KeyName": Object {
+          "Fn::GetAtt": Array [
+            "KeyPairEC2KeyPairtest58BBD56D",
+            "KeyPairName",
+          ],
+        },
+        "SecurityGroupIds": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "ControlSecurityGroup3AE37C87",
+              "GroupId",
+            ],
+          },
+        ],
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1SubnetF024651E",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Control/ControlNode",
+          },
+        ],
+        "UserData": Object {
+          "Fn::Base64": "#!/bin/bash
+yum update -y
+sudo yum install -y amazon-linux-extras ansible2 java-1.8.0-openjdk",
+        },
+      },
+      "Type": "AWS::EC2::Instance",
+    },
+    "ControlControlNodeInstanceProfileB79D5D54": Object {
+      "Properties": Object {
+        "Roles": Array [
+          Object {
+            "Ref": "Controlec2RoleB2AF2E44",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "ControlSecurityGroup3AE37C87": Object {
+      "Properties": Object {
+        "GroupDescription": "Zaloni Arena Control Node",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow SSH Access",
+            "FromPort": 22,
+            "IpProtocol": "tcp",
+            "ToPort": 22,
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "Controlec2RoleB2AF2E44": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "ec2.",
+                      Object {
+                        "Ref": "AWS::URLSuffix",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AdministratorAccess",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DirectoryServiceDHCPOptionsE150C11E": Object {
+      "Properties": Object {
+        "DomainName": "example.local",
+        "DomainNameServers": Object {
+          "Fn::GetAtt": Array [
+            "DirectoryServiceDhcpOptionsC5E3CEA1",
+            "DnsIpAddresses",
+          ],
+        },
+      },
+      "Type": "AWS::EC2::DHCPOptions",
+    },
+    "DirectoryServiceDhcpOptionsAssociationAF4CD32A": Object {
+      "Properties": Object {
+        "DhcpOptionsId": Object {
+          "Ref": "DirectoryServiceDHCPOptionsE150C11E",
+        },
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
+    },
+    "DirectoryServiceDhcpOptionsC5E3CEA1": Object {
+      "Properties": Object {
+        "Edition": "Standard",
+        "Name": "example.local",
+        "Password": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "{{resolve:secretsmanager:",
+              Object {
+                "Ref": "DirectoryServiceSecret688F71AC",
+              },
+              ":SecretString:password::}}",
+            ],
+          ],
+        },
+        "VpcSettings": Object {
+          "SubnetIds": Array [
+            Object {
+              "Ref": "NetworkVPCprivateapplicationSubnet1Subnet379E0731",
+            },
+            Object {
+              "Ref": "NetworkVPCprivateapplicationSubnet2Subnet4B6F2B99",
+            },
+          ],
+          "VpcId": Object {
+            "Ref": "NetworkVPC962EC14D",
+          },
+        },
+      },
+      "Type": "AWS::DirectoryService::MicrosoftAD",
+    },
+    "DirectoryServiceSecret688F71AC": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "Description": "Directory service credentials created for aws-cdk-zaloni-arena stack",
+        "GenerateSecretString": Object {
+          "ExcludeCharacters": "\\"@'$\`",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{\\"username\\":\\"admin\\",\\"domain\\":\\"example.local\\"}",
+        },
+        "Name": "directory-service/test/private",
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "EC2KeyNameManagerLambdaBE629145": Object {
+      "DependsOn": Array [
+        "EC2KeyPairManagerRoleB243C519",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "dc14a0bfdcdf0ac0ab50b09c217388f225f2aa96e49355730ccc51bed032acc8.zip",
+        },
+        "Description": "Custom CFN resource: Manage EC2 Key Pairs",
+        "FunctionName": "test-CFN-Resource-Custom-EC2-Key-Pair",
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "EC2KeyPairManagerRoleB243C519",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 180,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "EC2KeyPairManagerPolicyEBBC1576": Object {
+      "Properties": Object {
+        "Description": "Used by Lambda CFN-Resource-Custom-EC2-Key-Pair, which is a custom CFN resource, managing EC2 Key Pairs",
+        "ManagedPolicyName": "test-CFN-Resource-Custom-EC2-Key-Pair",
+        "Path": "/",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "ec2:DescribeKeyPairs",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "ec2:CreateKeyPair",
+                "ec2:CreateTags",
+              ],
+              "Condition": Object {
+                "StringLike": Object {
+                  "aws:RequestTag/CreatedByCfnCustomResource": "CFN::Resource::Custom::EC2-Key-Pair",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ec2:*:*:key-pair/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ec2:CreateTags",
+                "ec2:DeleteKeyPair",
+                "ec2:DeleteTags",
+              ],
+              "Condition": Object {
+                "StringLike": Object {
+                  "ec2:ResourceTag/CreatedByCfnCustomResource": "CFN::Resource::Custom::EC2-Key-Pair",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ec2:*:*:key-pair/*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": "secretsmanager:ListSecrets",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "secretsmanager:CreateSecret",
+                "secretsmanager:TagResource",
+              ],
+              "Condition": Object {
+                "StringLike": Object {
+                  "aws:RequestTag/CreatedByCfnCustomResource": "CFN::Resource::Custom::EC2-Key-Pair",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "secretsmanager:DeleteResourcePolicy",
+                "secretsmanager:DeleteSecret",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:GetResourcePolicy",
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:ListSecretVersionIds",
+                "secretsmanager:PutResourcePolicy",
+                "secretsmanager:PutSecretValue",
+                "secretsmanager:RestoreSecret",
+                "secretsmanager:UntagResource",
+                "secretsmanager:UpdateSecret",
+                "secretsmanager:UpdateSecretVersionStage",
+              ],
+              "Condition": Object {
+                "StringLike": Object {
+                  "secretsmanager:ResourceTag/CreatedByCfnCustomResource": "CFN::Resource::Custom::EC2-Key-Pair",
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "EC2KeyPairManagerRoleB243C519": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Description": "Used by Lambda CFN-Resource-Custom-EC2-Key-Pair, which is a custom CFN resource, managing EC2 Key Pairs",
+        "ManagedPolicyArns": Array [
+          Object {
+            "Ref": "EC2KeyPairManagerPolicyEBBC1576",
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "RoleName": "test-CFN-Resource-Custom-EC2-Key-Pair",
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "KeyPairEC2KeyPairtest58BBD56D": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "Description": "Key Pair created for aws-cdk-zaloni-arena stack",
+        "ExposePublicKey": false,
+        "KmsPrivate": "alias/aws/secretsmanager",
+        "KmsPublic": "alias/aws/secretsmanager",
+        "Name": "test",
+        "RemoveKeySecretsAfterDays": 0,
+        "SecretPrefix": "ec2-ssh-key/",
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "EC2KeyNameManagerLambdaBE629145",
+            "Arn",
+          ],
+        },
+        "StackName": "test",
+        "StorePublicKey": false,
+        "Tags": Object {
+          "CreatedByCfnCustomResource": "CFN::Resource::Custom::EC2-Key-Pair",
+        },
+      },
+      "Type": "Custom::EC2-Key-Pair",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "NetworkVPC962EC14D": Object {
+      "Properties": Object {
+        "CidrBlock": "10.0.0.0/20",
+        "EnableDnsHostnames": false,
+        "EnableDnsSupport": false,
+        "InstanceTenancy": "default",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "NetworkVPCIGWF93F4916": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "NetworkVPCS39C3FD12C": Object {
+      "Properties": Object {
+        "RouteTableIds": Array [
+          Object {
+            "Ref": "NetworkVPCprivateapplicationSubnet1RouteTable787CB572",
+          },
+          Object {
+            "Ref": "NetworkVPCprivateapplicationSubnet2RouteTable3590C157",
+          },
+          Object {
+            "Ref": "NetworkVPCpublicsubnetSubnet1RouteTable761B3BCF",
+          },
+          Object {
+            "Ref": "NetworkVPCpublicsubnetSubnet2RouteTable55460064",
+          },
+          Object {
+            "Ref": "NetworkVPCprivaterdsSubnet1RouteTableE4F706C1",
+          },
+          Object {
+            "Ref": "NetworkVPCprivaterdsSubnet2RouteTable0293330B",
+          },
+        ],
+        "ServiceName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "com.amazonaws.",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ".s3",
+            ],
+          ],
+        },
+        "VpcEndpointType": "Gateway",
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkVPCVPCGW990C1587": Object {
+      "Properties": Object {
+        "InternetGatewayId": Object {
+          "Ref": "NetworkVPCIGWF93F4916",
+        },
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+    "NetworkVPCprivateapplicationSubnet1DefaultRouteDFF776C7": Object {
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1NATGateway99BE9A29",
+        },
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet1RouteTable787CB572",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkVPCprivateapplicationSubnet1RouteTable787CB572": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-applicationSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCprivateapplicationSubnet1RouteTableAssociation5A620926": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet1RouteTable787CB572",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet1Subnet379E0731",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCprivateapplicationSubnet1Subnet379E0731": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.2.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private-application",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-applicationSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkVPCprivateapplicationSubnet2DefaultRouteD7057C1F": Object {
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet2NATGateway1796278D",
+        },
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet2RouteTable3590C157",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkVPCprivateapplicationSubnet2RouteTable3590C157": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-applicationSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCprivateapplicationSubnet2RouteTableAssociation3696C961": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet2RouteTable3590C157",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCprivateapplicationSubnet2Subnet4B6F2B99",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCprivateapplicationSubnet2Subnet4B6F2B99": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            1,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.3.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private-application",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-applicationSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkVPCprivaterdsSubnet1RouteTableAssociationD742B424": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivaterdsSubnet1RouteTableE4F706C1",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCprivaterdsSubnet1SubnetF85EF342",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCprivaterdsSubnet1RouteTableE4F706C1": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-rdsSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCprivaterdsSubnet1SubnetF85EF342": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.4.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private-rds",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-rdsSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkVPCprivaterdsSubnet2RouteTable0293330B": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-rdsSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCprivaterdsSubnet2RouteTableAssociation39E3366E": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCprivaterdsSubnet2RouteTable0293330B",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCprivaterdsSubnet2Subnet67546714",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCprivaterdsSubnet2Subnet67546714": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            1,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.5.0/24",
+        "MapPublicIpOnLaunch": false,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "private-rds",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/private-rdsSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkVPCpublicsubnetSubnet1DefaultRouteD30CD562": Object {
+      "DependsOn": Array [
+        "NetworkVPCVPCGW990C1587",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "NetworkVPCIGWF93F4916",
+        },
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1RouteTable761B3BCF",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkVPCpublicsubnetSubnet1EIP5B4A78B5": Object {
+      "Properties": Object {
+        "Domain": "vpc",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "NetworkVPCpublicsubnetSubnet1NATGateway99BE9A29": Object {
+      "Properties": Object {
+        "AllocationId": Object {
+          "Fn::GetAtt": Array [
+            "NetworkVPCpublicsubnetSubnet1EIP5B4A78B5",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1SubnetF024651E",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "NetworkVPCpublicsubnetSubnet1RouteTable761B3BCF": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCpublicsubnetSubnet1RouteTableAssociationF0F7A5F3": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1RouteTable761B3BCF",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet1SubnetF024651E",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCpublicsubnetSubnet1SubnetF024651E": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            0,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public-subnet",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet1",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkVPCpublicsubnetSubnet2DefaultRouteE58732F1": Object {
+      "DependsOn": Array [
+        "NetworkVPCVPCGW990C1587",
+      ],
+      "Properties": Object {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": Object {
+          "Ref": "NetworkVPCIGWF93F4916",
+        },
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet2RouteTable55460064",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkVPCpublicsubnetSubnet2EIP414EAD0D": Object {
+      "Properties": Object {
+        "Domain": "vpc",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "NetworkVPCpublicsubnetSubnet2NATGateway1796278D": Object {
+      "Properties": Object {
+        "AllocationId": Object {
+          "Fn::GetAtt": Array [
+            "NetworkVPCpublicsubnetSubnet2EIP414EAD0D",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet2Subnet6B18AF9C",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "NetworkVPCpublicsubnetSubnet2RouteTable55460064": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkVPCpublicsubnetSubnet2RouteTableAssociation67AE86C9": Object {
+      "Properties": Object {
+        "RouteTableId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet2RouteTable55460064",
+        },
+        "SubnetId": Object {
+          "Ref": "NetworkVPCpublicsubnetSubnet2Subnet6B18AF9C",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkVPCpublicsubnetSubnet2Subnet6B18AF9C": Object {
+      "Properties": Object {
+        "AvailabilityZone": Object {
+          "Fn::Select": Array [
+            1,
+            Object {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.0.1.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "public-subnet",
+          },
+          Object {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          Object {
+            "Key": "Name",
+            "Value": "test/Network/VPC/public-subnetSubnet2",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "NetworkVPC962EC14D",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+  },
+  "Rules": Object {
+    "CheckBootstrapVersion": Object {
+      "Assertions": Array [
+        Object {
+          "Assert": Object {
+            "Fn::Not": Array [
+              Object {
+                "Fn::Contains": Array [
+                  Array [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  Object {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

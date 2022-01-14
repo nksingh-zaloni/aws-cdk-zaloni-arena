@@ -1,17 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Construct } from 'constructs';
 
 interface NetworkProps {
   vpcCidr: string;
 }
 
-export class Network extends cdk.Construct {
+export class Network extends Construct {
   public readonly vpc: ec2.Vpc;
 
-  constructor(scope: cdk.Construct, id: string, props: NetworkProps) {
+  constructor(scope: Construct, id: string, props: NetworkProps) {
     super(scope, id);
 
     this.vpc = new ec2.Vpc(this, 'VPC', {

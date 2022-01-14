@@ -1,7 +1,7 @@
-import '@aws-cdk/assert/jest';
 import { resolve } from 'path';
-import { App } from '@aws-cdk/core';
-import * as YAML from 'yamljs';
+import { App } from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import YAML from 'yamljs';
 import { MainStack } from '../src/main-stack';
 
 test('Snapshot', () => {
@@ -11,6 +11,6 @@ test('Snapshot', () => {
     ...config,
   });
 
-  expect(stack).not.toHaveResource('AWS::S3::Bucket');
-  expect(app.synth().getStackArtifact(stack.artifactId).template).toMatchSnapshot();
+  const template = Template.fromStack(stack);
+  expect(template.toJSON()).toMatchSnapshot();
 });

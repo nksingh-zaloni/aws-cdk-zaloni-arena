@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as iam from '@aws-cdk/aws-iam';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import { KeyPair } from 'cdk-ec2-key-pair';
+import { Construct } from 'constructs';
 
 interface ControlProps {
   vpc: ec2.Vpc;
@@ -13,10 +14,10 @@ interface ControlProps {
   whitelist: Array<string>;
 }
 
-export class Control extends cdk.Construct {
+export class Control extends Construct {
   public readonly securityGroup: ec2.SecurityGroup;
 
-  constructor(scope: cdk.Construct, id: string, props: ControlProps) {
+  constructor(scope: Construct, id: string, props: ControlProps) {
     super(scope, id);
 
     this.securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {

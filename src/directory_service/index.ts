@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
-import * as directoryservice from '@aws-cdk/aws-directoryservice';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
+
+import * as cdk from 'aws-cdk-lib';
+import * as directoryservice from 'aws-cdk-lib/aws-directoryservice';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
+import { Construct } from 'constructs';
 
 interface DirectoryServiceProps {
   vpc: ec2.Vpc;
@@ -11,10 +13,10 @@ interface DirectoryServiceProps {
   directoryEdition?: string;
 }
 
-export class DirectoryService extends cdk.Construct {
+export class DirectoryService extends Construct {
   public readonly secret: secretsmanager.Secret;
 
-  constructor(scope: cdk.Construct, id: string, props: DirectoryServiceProps) {
+  constructor(scope: Construct, id: string, props: DirectoryServiceProps) {
     super(scope, id);
 
     this.secret = new secretsmanager.Secret(this, 'Secret', {

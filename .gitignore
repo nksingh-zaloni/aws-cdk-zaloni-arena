@@ -2,6 +2,8 @@
 !/.gitattributes
 !/.projen/tasks.json
 !/.projen/deps.json
+!/.projen/files.json
+!/.github/workflows/pull-request-lint.yml
 !/.github/workflows/stale.yml
 !/package.json
 !/LICENSE
@@ -30,7 +32,6 @@ jspm_packages/
 .yarn-integrity
 .cache
 *.pem
-test/__snapshots__/
 !/.projenrc.js
 /test-reports/
 junit.xml
@@ -45,6 +46,7 @@ junit.xml
 /lib
 /dist/
 !/.eslintrc.json
+/assets/
 !/cdk.json
 /cdk.out/
 .cdk.staging/

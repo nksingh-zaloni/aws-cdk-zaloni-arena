@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: MIT-0
 
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as iam from '@aws-cdk/aws-iam';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { KeyPair } from 'cdk-ec2-key-pair';
+import { Construct } from 'constructs';
 
 interface BastionProps {
   vpc: ec2.Vpc;
@@ -15,10 +16,10 @@ interface BastionProps {
   dsSecret: secretsmanager.Secret;
 }
 
-export class Bastion extends cdk.Construct {
+export class Bastion extends Construct {
   public readonly securityGroup: ec2.SecurityGroup;
 
-  constructor(scope: cdk.Construct, id: string, props: BastionProps) {
+  constructor(scope: Construct, id: string, props: BastionProps) {
     super(scope, id);
 
     this.securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {

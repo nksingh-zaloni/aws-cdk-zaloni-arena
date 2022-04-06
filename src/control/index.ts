@@ -5,9 +5,10 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as iam from '@aws-cdk/aws-iam';
 import * as cdk from '@aws-cdk/core';
 import { KeyPair } from 'cdk-ec2-key-pair';
+import {readFileSync} from 'fs';
 
 interface ControlProps {
-  vpc: ec2.Vpc;
+  vpcId: string;
   key: KeyPair;
   instanceType: string;
   whitelist: Array<string>;
@@ -15,18 +16,32 @@ interface ControlProps {
 
 export class Control extends cdk.Construct {
   public readonly securityGroup: ec2.SecurityGroup;
+  public readonly jenkinsSecurityGroup: ec2.SecurityGroup;
 
   constructor(scope: cdk.Construct, id: string, props: ControlProps) {
     super(scope, id);
 
+    const vpc = ec2.Vpc.fromLookup(this, 'vpc', { vpcId: props.vpcId });
+
+    // import default VPC
+    // const vpc = ec2.Vpc.fromLookup(this, 'my-default-vpc', {
+    //   isDefault: true,
+    // });
+
     this.securityGroup = new ec2.SecurityGroup(this, 'SecurityGroup', {
-      vpc: props.vpc,
+      vpc: vpc,
       description: 'Zaloni Arena Control Node',
       allowAllOutbound: true,
     });
 
+    // create a security group for the EC2 instance
+    this.jenkinsSecurityGroup = new ec2.SecurityGroup(this, 'jenkins-sg', {
+      vpc,
+    });
+
     // Access to the white listed IPs
     for (const ip of props.whitelist) {
+      this.jenkinsSecurityGroup.addIngressRule(ec2.Peer.ipv4(ip), ec2.Port.tcp(8080), 'allow HTTP traffic');
       this.securityGroup.addIngressRule(ec2.Peer.ipv4(ip), ec2.Port.tcp(22), 'Allow SSH Access');
     }
 
@@ -45,25 +60,26 @@ export class Control extends cdk.Construct {
       cpuType: ec2.AmazonLinuxCpuType.X86_64,
     });
 
-    const userData = [
-      'yum update -y',
-      'sudo yum install -y amazon-linux-extras ansible2 java-1.8.0-openjdk',
-    ];
-
     // Create the Control Node
     const instance = new ec2.Instance(this, 'ControlNode', {
-      vpc: props.vpc,
+      vpc: vpc,
       instanceType: new ec2.InstanceType(props.instanceType),
       machineImage,
       securityGroup: this.securityGroup,
       keyName: props.key.keyPairName,
       role,
-      vpcSubnets: {
-        subnetGroupName: 'public-subnet',
-      },
+      vpcSubnets: {subnetType: ec2.SubnetType.PRIVATE_WITH_NAT},
     });
-    instance.userData.addCommands(...userData);
-    new cdk.CfnOutput(this, 'Control Node IP Address', { value: instance.instancePublicIp });
-    new cdk.CfnOutput(this, 'Control Node ssh command', { value: 'ssh -i ' + props.key.keyPairName + '.pem -o IdentitiesOnly=yes ec2-user@' + instance.instancePublicIp });
+    instance.addSecurityGroup(this.jenkinsSecurityGroup);
+    
+    // load user data script
+    const userDataScript = readFileSync('./lib/user-data.sh', 'utf8');
+
+    //add user data to the EC2 instance
+    instance.addUserData(userDataScript);
+
+    
+    new cdk.CfnOutput(this, 'Control Node IP Address', { value: instance.instancePrivateIp });
+    new cdk.CfnOutput(this, 'Control Node ssh command', { value: 'ssh -i ' + props.key.keyPairName + '.pem -o IdentitiesOnly=yes ec2-user@' + instance.instancePrivateIp });
   }
 }

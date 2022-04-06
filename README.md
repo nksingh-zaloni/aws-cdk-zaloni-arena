@@ -3,8 +3,6 @@
 This project is meant to automate the deployment of all the prerequsite resources required 
 to deploy Zaloni Arena on AWS using AWS CDK in Typescript. The code deploys the resoruces into a new isolated VPC. 
 
-![Architecture](./doc/aws-cdk-zaloni-arena-architecture.jpg)
-
 ## Getting started
 
 Clone this repository and issue the following commands to bootstrap cdk in your

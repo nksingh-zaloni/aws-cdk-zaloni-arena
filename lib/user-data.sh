@@ -15,9 +15,7 @@ sudo make altinstall
 cd ../
 
 sudo yum install python3-pip
-pip3 install boto3==1.20.24
-pip3 install botocore==1.23.24
-pip3 install python-gilt
+pip3 install boto3
 sudo yum install git -y
 sudo yum install java-1.8.0-openjdk -y
 

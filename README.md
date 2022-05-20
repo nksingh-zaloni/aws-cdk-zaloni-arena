@@ -8,7 +8,11 @@ to deploy Zaloni Arena on AWS using AWS CDK in Typescript. The code deploys the 
 Clone this repository and issue the following commands to bootstrap cdk in your
 default aws profile account/region
 
+TO-DO:
+AWS setup from execution from AWS Cloud Shell(adminIAM role)
+
 ```console
+TO-DO: add git clone steps
 cd aws-cdk-zaloni-arena
 npm install -g yarn
 npm install

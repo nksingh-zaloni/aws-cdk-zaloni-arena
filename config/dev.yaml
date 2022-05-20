@@ -1,14 +1,13 @@
 ## The id of the VPC where Arena will be deployed. Mandatory.
-vpcId: vpc-0c5f937bd3de67ea0
+vpcId: vpc-09989c3f6c3f13d89
 availabilityZone: us-east-1a
-privateSubnetId: subnet-025c61f2aab4b5c59
+privateSubnetId: subnet-04256bea30e540f20
 # Instance type for Control Node
 controlNodeInstanceType: "t2.large"
-
 # Control Node whitelisted IPs
 controlNodeWhitelist: 
-  - '0.0.0.0/0' # Warning: this mean that access is open to the internet 
-
+  - '192.168.0.0/16' # Warning: this mean that access is open to the internet 
+vpcCIDR: '10.218.0.0/24'
 # Where to install
 #env:
 #  region: '<region>'

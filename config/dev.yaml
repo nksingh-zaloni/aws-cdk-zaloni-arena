@@ -1,7 +1,7 @@
 ## The id of the VPC where Arena will be deployed. Mandatory.
-vpcId: vpc-09989c3f6c3f13d89
-availabilityZone: us-east-1a
-privateSubnetId: subnet-04256bea30e540f20
+vpcId: #######
+availabilityZone: #######
+privateSubnetId: #######
 # Instance type for Control Node
 controlNodeInstanceType: "t2.large"
 # Control Node whitelisted IPs

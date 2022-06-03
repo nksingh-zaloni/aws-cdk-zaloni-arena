@@ -28,4 +28,9 @@ sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 
 
 #TO_DO
-# Install docker
+sudo um-config-manager --enable rhui-REGION-rhel-server-extras
+sudo yum update -y
+sudo yum -y install docker
+sudo service docker start
+sudo usermod -a -G docker ec2-user
+sudo usermod -a -G docker jenkins

@@ -39,7 +39,7 @@ export class MainStack extends cdk.Stack {
       vpcId: props.vpcId,
       vpcCIDR: props.vpcCIDR,
       // availabilityZone: props.availabilityZone,
-      // privateSubnetId: props.privateSubnetId,
+      privateSubnetId: props.privateSubnetId,
       key,
       instanceType: props.controlNodeInstanceType,
       whitelist: props.controlNodeWhitelist,

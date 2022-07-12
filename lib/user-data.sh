@@ -34,3 +34,7 @@ sudo yum -y install docker
 sudo service docker start
 sudo usermod -a -G docker ec2-user
 sudo usermod -a -G docker jenkins
+
+sleep 2
+#ADD jenkins user to sudoer file to provide sudo access to it
+sudo echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoer
